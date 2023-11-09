@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
           getRandomQuestion();
         } else {
           // If the answer is incorrect, display the exampleCode
-          resultDiv.textContent = data.exampleCode;
+          resultDiv.innerHTML = data.exampleCode.replace(/\n/g, '<br>');
           alert('오답');
         }
       })
