@@ -20,8 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-
+    
     const answer = document.getElementById('answer').value;
+    const answerInput = document.getElementById('answer');
 
     fetch('/checkAnswer', {
       method: 'POST',
@@ -34,11 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
       .then((data) => {
         if (data.result) {
           alert('정답');
+          answerInput.value = ''; // 입력된 답안 초기화
+          resultDiv.innerHTML = ''; // 결과 문자열 초기화
           getRandomQuestion();
         } else {
           // If the answer is incorrect, display the exampleCode
           resultDiv.innerHTML = data.exampleCode.replace(/\n/g, '<br>');
           alert('오답');
+          answerInput.value = ''; // 입력된 답안 초기화
         }
       })
       .catch((error) => {
