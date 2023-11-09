@@ -1,3 +1,5 @@
+// routes.js
+
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -6,57 +8,44 @@ import fs from 'fs';
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const qnaPath = path.join(__dirname, '../data/qna.json');
+const qnaPath = path.join(__dirname, 'qna.json');
 
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
-router.get('/qna', (req, res) => {
+router.get('/randomQuestion', (req, res) => {
   // Read qna.json file
   fs.readFile(qnaPath, 'utf8', (err, data) => {
     if (err) {
-      res.status(500).send('Error reading the file');
-      return;
+      console.error(err);
+      res.status(500).send('Error fetching questions');
+    } else {
+      const qna = JSON.parse(data);
+      // Randomly select a question
+      const randomIndex = Math.floor(Math.random() * qna.length);
+      const randomQuestion = qna[randomIndex].question;
+      res.json({ question: randomQuestion, index: randomIndex });
     }
-
-    const qnaData = JSON.parse(data);
-    const randomIndex = Math.floor(Math.random() * qnaData.length);
-    const randomQuestion = qnaData[randomIndex].question;
-    res.send(randomQuestion);
   });
 });
 
-router.post('/check-answer', (req, res) => {
-    const questionIndex = req.body.questionIndex;
-  
-    fs.readFile(qnaPath, 'utf8', (err, data) => {
-      if (err) {
-        res.status(500).send('Error reading the file');
-        return;
-      }
-  
-      const qnaData = JSON.parse(data);
-  
-      if (questionIndex < 0 || questionIndex >= qnaData.length) {
-        res.status(400).send('Invalid question index');
-        return;
-      }
-  
-      const correctAnswer = qnaData[questionIndex].answer.toLowerCase().trim();
-      const userAnswer = req.body.answer.toLowerCase().trim();
-  
-      const isCorrect = userAnswer === correctAnswer;
-      if (isCorrect) {
-        const nextQuestionIndex = (questionIndex + 1) % qnaData.length;
-        const nextQuestion = qnaData[nextQuestionIndex].question;
-        res.send({ result: 'Correct!', nextQuestion });
-      } else {
-        res.send({ result: `Wrong! The correct answer is: ${correctAnswer}` });
-      }
-    });
+router.post('/checkAnswer', (req, res) => {
+  const { index, answer } = req.body;
+  fs.readFile(qnaPath, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error fetching questions');
+    } else {
+      const qna = JSON.parse(data);
+      const correctAnswer = qna[index].answer;
+
+      // Check if the submitted answer matches the correct answer
+      const result = answer === correctAnswer;
+
+      res.json({ result });
+    }
   });
-  
+});
 
 export default router;
-xq

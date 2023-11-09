@@ -36,7 +36,7 @@ input[type="text"] {
   border-radius: 4px;
 }
 
-button {
+input[type="submit"] {
   padding: 10px 20px;
   background-color: #4CAF50;
   color: white;
@@ -46,6 +46,6 @@ button {
   transition: background-color 0.3s;
 }
 
-button:hover {
+input[type="submit"]:hover {
   background-color: #45a049;
 }

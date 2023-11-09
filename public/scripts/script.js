@@ -1,40 +1,51 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const answerForm = document.getElementById('answerForm');
-  answerForm.addEventListener('submit', function (event) {
-    event.preventDefault(); // 폼의 기본 동작(페이지 새로고침) 방지
+// script.js (browser side)
 
-    const userAnswer = document.getElementById('answerInput').value;
-    const questionIndex = document.getElementById('question').dataset.index;
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('qna');
+  const questionDiv = document.getElementById('question');
+  const resultDiv = document.getElementById('result');
 
-    fetch('/check-answer', {
+  // Function to get a random question
+  const getRandomQuestion = () => {
+    fetch('/randomQuestion')
+      .then((response) => response.json())
+      .then((data) => {
+        questionDiv.textContent = data.question;
+        questionDiv.dataset.index = data.index;
+      })
+      .catch((error) => {
+        console.error('Error fetching random question:', error);
+      });
+  };
+
+  // Get a random question when the page loads
+  getRandomQuestion();
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const answer = document.getElementById('answer').value;
+    const questionIndex = questionDiv.dataset.index;
+
+    fetch('/checkAnswer', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ answer: userAnswer, questionIndex: questionIndex }),
+      body: JSON.stringify({ index: questionIndex, answer }),
     })
-      .then(response => response.json())
-      .then(data => {
-        const resultContainer = document.getElementById('result');
-        resultContainer.innerText = data.result;
-
-        if (data.nextQuestion) {
-          document.getElementById('question').innerText = data.nextQuestion;
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          resultDiv.textContent = '정답입니다!';
         } else {
-          document.getElementById('question').innerText = 'All questions answered!';
+          resultDiv.textContent = '틀렸습니다. 다시 시도해보세요.';
         }
+        // Get a new random question after checking the answer
+        getRandomQuestion();
       })
-      .catch(error => console.error('Error:', error));
+      .catch((error) => {
+        console.error('Error checking answer:', error);
+      });
   });
-
-  displayRandomQuestion();
 });
-
-function displayRandomQuestion() {
-  fetch('/qna')
-    .then(response => response.text())
-    .then(data => {
-      const questionContainer = document.getElementById('question');
-      questionContainer.innerText = data;
-    });
-}
