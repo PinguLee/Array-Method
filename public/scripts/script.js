@@ -30,6 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const answer = answerInput.value;
 
+    if (answer === '') {
+      return; // 입력창이 비어있으면 제출하지 못하도록 return
+    }
+
     try {
       const response = await fetch('/checkAnswer', {
         method: 'POST',
