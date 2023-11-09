@@ -1,11 +1,20 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 
 const router = express.Router();
 
-// 기본 라우트 설정
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, '../public', 'index.html'));
+});
+
+router.get('/qna.json', (req, res) => {
+  // 이곳에서 JSON 파일의 경로를 설정해야 합니다
+  res.sendFile(path.join(__dirname, '../data', 'data.json'));
 });
 
 export default router;
