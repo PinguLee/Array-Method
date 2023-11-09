@@ -40,12 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('정답');
         answerInput.value = '';
         resultDiv.innerHTML = '';
+        // 정답일 때, 테두리와 배경색을 초기화
+        resultDiv.style.border = 'none';
+        resultDiv.style.backgroundColor = 'initial';
         getRandomQuestion();
       } else {
         resultDiv.innerHTML = data.exampleCode.replace(/\n/g, '<br>');
         alert('오답');
         answerInput.value = '';
         answerInput.focus(); // 오답일 경우 다시 답 입력 창에 포커스를 맞춤
+        // 오답일 때, 테두리와 배경색을 추가
+        resultDiv.style.border = '2px solid #FF6347';
+        resultDiv.style.padding = '20px';
+        resultDiv.style.borderRadius = '8px';
+        resultDiv.style.backgroundColor = '#FFE4E1';
       }
     } catch (error) {
       console.error('Error checking answer:', error);
