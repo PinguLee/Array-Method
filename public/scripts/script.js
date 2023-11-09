@@ -3,15 +3,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const questionDiv = document.getElementById('question');
   const resultDiv = document.getElementById('result');
   const answerInput = document.getElementById('answer');
-  let questionIndex = null;
+  let usedIndices = new Set(); // 이미 출제한 문제의 인덱스를 저장하는 Set 객체
 
   const getRandomQuestion = () => {
     fetch('/randomQuestion')
       .then((response) => response.json())
       .then((data) => {
-        questionDiv.textContent = data.question;
-        questionIndex = data.index;
-        answerInput.focus(); // 답 입력 창에 자동으로 포커스를 맞춤
+        if (!usedIndices.has(data.index)) { // 이미 출제한 문제가 아니라면 문제 출제
+          questionDiv.textContent = data.question;
+          questionIndex = data.index;
+          answerInput.focus(); // 답 입력 창에 자동으로 포커스를 맞춤
+          usedIndices.add(questionIndex); // 출제한 문제의 인덱스를 Set에 추가
+        } else { // 이미 출제한 문제일 경우 다시 문제를 출제
+          getRandomQuestion();
+        }
       })
       .catch((error) => {
         console.error('Error fetching random question:', error);
