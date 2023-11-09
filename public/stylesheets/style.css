@@ -9,10 +9,10 @@ body {
 }
 
 .container {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 40px;
   text-align: center;
   max-width: 400px;
   width: 90%;
@@ -20,34 +20,37 @@ body {
 
 .inputBox {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
 }
 
 h1 {
-  font-size: 1.5em;
+  font-size: 2em;
   margin-bottom: 20px;
   color: #333;
 }
 
 p {
   color: #555;
+  margin-bottom: 20px;
 }
 
 input[type="text"] {
-  width: calc(100% - 20px);
-  padding: 8px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  width: calc(100% - 70px);
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 input[type="submit"] {
-  padding: 8px;
-  margin: 10px 0;
+  width: 60px;
+  padding: 12px;
   background-color: #4CAF50;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -58,4 +61,5 @@ input[type="submit"]:hover {
 
 #result {
   text-align: left;
+  margin-top: 20px;
 }
