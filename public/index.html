@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,22 @@
   <script src="./scripts/script.js" defer></script>
   <title>강제주입교육</title>
 </head>
+
 <body>
   <div class="container">
     <h1>강제주입교육 문제</h1>
     <p>아래 입력창에 답을 입력하세요.</p>
     <form id="qna">
       <div id="question" data-index=""></div>
-      <input type="text" id="answer" name="answer" placeholder="입력">
-      <input type="submit" value="확인">
+      <div class="inputBox">
+        <input type="text" id="answer" name="answer" placeholder="입력">
+        <input type="submit" value="확인">
+      </div>
+      <div>
     </form>
+  </div>
     <p id="result"></p>
   </div>
 </body>
+
 </html>
