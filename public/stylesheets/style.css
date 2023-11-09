@@ -60,6 +60,6 @@ input[type="submit"]:hover {
 }
 
 #result {
-  text-align: left;
+  text-align: center;
   margin-top: 20px;
 }
