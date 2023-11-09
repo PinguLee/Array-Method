@@ -1,16 +1,17 @@
 import express from 'express';
-import path from 'path';
+import http from 'http';
+import bodyParser from 'body-parser';
 import routes from './routes/routes.js';
 
 const app = express();
-const port = process.env.port || 3000;
+const port = 8080;
 
-// 정적 파일 서빙을 위해 index.html을 제공할 디렉토리 설정
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
 
-// 라우팅을 위해 routes.js 파일을 사용
+app.use(express.static('public'));
 app.use('/', routes);
 
-app.listen(port, () => {
+const server = http.createServer(app);
+server.listen(port, () => {
   console.log(`http://localhost:${port}`);
 });
